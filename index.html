@@ -239,17 +239,26 @@
               <div class="swatch">
                 <span class="swatch-color navy"></span>
                 <strong>Navy</strong>
-                <p>#232E4E</p>
+                <div class="swatch-meta">
+                  <p>#232E4E</p>
+                  <button class="copy-chip" type="button" data-copy="#232E4E" aria-label="Copy navy hex code">Copy</button>
+                </div>
               </div>
               <div class="swatch">
                 <span class="swatch-color blue"></span>
                 <strong>Blue</strong>
-                <p>#4AA0D7</p>
+                <div class="swatch-meta">
+                  <p>#4AA0D7</p>
+                  <button class="copy-chip" type="button" data-copy="#4AA0D7" aria-label="Copy blue hex code">Copy</button>
+                </div>
               </div>
               <div class="swatch">
                 <span class="swatch-color yellow"></span>
                 <strong>Yellow</strong>
-                <p>#FDC22D</p>
+                <div class="swatch-meta">
+                  <p>#FDC22D</p>
+                  <button class="copy-chip" type="button" data-copy="#FDC22D" aria-label="Copy yellow hex code">Copy</button>
+                </div>
               </div>
             </div>
             <p class="card-note">
@@ -290,6 +299,37 @@
             </ul>
           </article>
         </div>
+
+        <div class="logo-library card-dark">
+          <div class="logo-library-header">
+            <div>
+              <h3>Logo downloads</h3>
+              <p class="card-note">Use these files directly from the guide. Each logo card includes a live preview and a download button.</p>
+            </div>
+          </div>
+          <div class="logo-grid">
+            <article class="logo-card">
+              <div class="logo-preview logo-preview-light">
+                <img src="assets/logos/lifeskills-logo-black.png" alt="LifeSkills black logo">
+              </div>
+              <div class="logo-card-copy">
+                <strong>Primary black logo</strong>
+                <p>PNG file for light backgrounds and general brand usage.</p>
+              </div>
+              <a class="button button-download" href="assets/logos/lifeskills-logo-black.png" download="lifeskills-logo-black.png">Download PNG</a>
+            </article>
+            <article class="logo-card">
+              <div class="logo-preview logo-preview-dark">
+                <img src="assets/logos/lifeskills-logo-white.webp" alt="LifeSkills white logo">
+              </div>
+              <div class="logo-card-copy">
+                <strong>White reverse logo</strong>
+                <p>WEBP file for dark backgrounds, cover art, and presentation slides.</p>
+              </div>
+              <a class="button button-download" href="assets/logos/lifeskills-logo-white.webp" download="lifeskills-logo-white.webp">Download WEBP</a>
+            </article>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -327,5 +367,46 @@
       </div>
     </section>
   </main>
+  <script>
+    const copyButtons = document.querySelectorAll("[data-copy]");
+
+    async function copyText(value, button) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(value);
+        } else {
+          const input = document.createElement("textarea");
+          input.value = value;
+          input.setAttribute("readonly", "");
+          input.style.position = "absolute";
+          input.style.left = "-9999px";
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand("copy");
+          document.body.removeChild(input);
+        }
+
+        const originalText = button.textContent;
+        button.textContent = "Copied";
+        button.classList.add("is-copied");
+
+        window.setTimeout(() => {
+          button.textContent = originalText;
+          button.classList.remove("is-copied");
+        }, 1400);
+      } catch (error) {
+        button.textContent = "Copy failed";
+        window.setTimeout(() => {
+          button.textContent = "Copy";
+        }, 1600);
+      }
+    }
+
+    copyButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        copyText(button.dataset.copy, button);
+      });
+    });
+  </script>
 </body>
 </html>
